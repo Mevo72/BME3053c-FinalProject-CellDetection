@@ -5,7 +5,7 @@
 %magnetic nanoparticles.
 
 clc;clear;
-pix=imread('Cell2.png');
+pix=imread('Cell1.png');
 [h,w,p]=size(pix);
 binary=false(h,w); 
 new=pix; I=pix;
@@ -20,12 +20,7 @@ for ii= 1:h
         end
     end
 end
-new1=rgb2gray(new);
-
-%Use edge and the Sobel operator to calculate the threshold value. Creates a binary gradient mask.
-[~,threshold] = edge(new1,'sobel');
-fudgeFactor = 0.5;
-BWs = edge(new1,'sobel',threshold * fudgeFactor);
+BWs=rgb2gray(new);
 
 %Dilatates the image by the given structure elements (sec90 and sec0)
 se90 = strel('line',2,90);
@@ -55,6 +50,7 @@ CC = bwconncomp(BW2,8); %Here we are counting the pixels with a conectivity of 8
 measurements = regionprops(CC, 'Centroid', 'Area');
 numberOfCircles = length(measurements);
 fprintf('There are %.0f cells\n',numberOfCircles);
+
 
 subplot(1,2,1)
 imshow(Segout1) %Here we want to display the original image with all the outlines created, regardless of the area of the circles. This will be used as reference to see which cells where counted for and which weren't when compared tothe binary image
